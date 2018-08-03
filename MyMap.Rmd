@@ -1,0 +1,35 @@
+---
+title: "Wills Web Map"
+author: "Will Gaines"
+date: "03/08/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(leaflet)
+```
+
+(PS. That date is DD/MM/YYYY because I'm english not american.)
+
+Now for my map.
+This map shows the location of the 12 home stadiums used in the 2017/18 Premiership Rugby Season.
+Each stadium marker has a label with the home teams name, followed by their final league position, and a popup with their win-loss record.
+
+```{r}
+df<-data.frame(names=c("Bath","Exeter","Gloucester","Harlequins","Leicester",
+                        "London Irish","Newcastle","Northampton","Sale Sharks",
+                        "Saracens","Wasps","Worcester"),
+                position = c(6,1,7,10,5,12,4,9,8,2,3,11),
+                record=c("W11 L11", "W17 L5", "W11 D1 L10", "W7 L15","W13 L9",
+                         "W3 L19", "W14 L8", "W8 L14", "W10 L12",
+                         "W16 L6", "W14 D1 L7", "W7 L15"),
+                lat=c(51.381727,50.709559,51.871694,51.450366,52.624147,51.422504,
+                      55.018624,52.239773,53.469334,51.603785,52.449001,52.214899),
+                lng=c(-2.354976,-3.467741,-2.242869,-0.344186,-1.132957,-0.982584,
+                      -1.671789,-0.919578,-2.375967,-0.222468,-1.498238,-2.163165))
+
+df %>% leaflet() %>% addTiles() %>% addMarkers(label = paste(df$names,df$position,                                     sep = ": "),
+                                    popup = df$record,
+                                    clusterOptions = markerClusterOptions())
+```
